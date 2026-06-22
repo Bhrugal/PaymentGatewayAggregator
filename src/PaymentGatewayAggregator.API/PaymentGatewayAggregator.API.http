@@ -1,0 +1,6 @@
+@PaymentGatewayAggregator.API_HostAddress = http://localhost:5260
+
+GET {{PaymentGatewayAggregator.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
