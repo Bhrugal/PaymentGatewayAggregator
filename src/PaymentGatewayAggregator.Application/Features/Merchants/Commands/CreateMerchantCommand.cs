@@ -1,6 +1,6 @@
-namespace PaymentGatewayAggregator.Application.Features.Merchants.DTOs;
+namespace PaymentGatewayAggregator.Application.Features.Merchants.Commands;
 
-public class CreateMerchantRequest
+public class CreateMerchantCommand
 {
     public string Name { get; set; } = string.Empty;
 
