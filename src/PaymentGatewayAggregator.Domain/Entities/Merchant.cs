@@ -1,14 +1,16 @@
-using PaymentGatewayAggregator.Domain.Common;
-
 namespace PaymentGatewayAggregator.Domain.Entities;
 
-public class Merchant : BaseEntity
+public class Merchant
 {
+    public Guid Id { get; set; }
+
     public string Name { get; set; } = string.Empty;
 
     public string Email { get; set; } = string.Empty;
 
-    public string ApiKey { get; set; } = string.Empty;
+    public string GatewayType { get; set; } = string.Empty;
 
-    public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsActive { get; set; } = true;
 }

@@ -1,4 +1,7 @@
+using PaymentGatewayAggregator.Persistence.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddPersistence(builder.Configuration);
+
 
 builder.Services.AddControllers();
 
