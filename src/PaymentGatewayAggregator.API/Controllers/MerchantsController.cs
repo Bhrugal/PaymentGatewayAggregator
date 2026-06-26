@@ -42,6 +42,21 @@ public class MerchantsController : ControllerBase
         return Ok(merchant);
     }
 
+    //[HttpPut("{id}")]
+    //public IActionResult Update(Guid id, UpdateMerchantRequest request)
+    //{
+    //    var merchant = Merchants.FirstOrDefault(x => x.Id == id);
+
+    //    if (merchant == null)
+    //        return NotFound();
+
+    //    merchant.Name = request.Name;
+    //    merchant.Email = request.Email;
+    //    merchant.GatewayType = request.GatewayType;
+
+    //    return Ok(merchant);
+    //}
+
     [HttpPut("{id}")]
     public IActionResult Update(Guid id, UpdateMerchantRequest request)
     {
