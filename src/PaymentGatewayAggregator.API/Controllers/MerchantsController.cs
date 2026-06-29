@@ -90,6 +90,9 @@ using Microsoft.AspNetCore.Mvc;
 using PaymentGatewayAggregator.Application.Features.Merchants.DTOs;
 using PaymentGatewayAggregator.Application.Interfaces.Repositories;
 using PaymentGatewayAggregator.Application.Mappings;
+using MediatR;
+using PaymentGatewayAggregator.Application.Features.Merchants.Commands;
+using PaymentGatewayAggregator.Application.Features.Merchants.Queries;
 
 namespace PaymentGatewayAggregator.API.Controllers;
 
@@ -97,40 +100,40 @@ namespace PaymentGatewayAggregator.API.Controllers;
 [Route("api/[controller]")]
 public class MerchantsController : ControllerBase
 {
+    private readonly IMediator _mediator;
     private readonly IMerchantRepository _merchantRepository;
 
-    public MerchantsController(IMerchantRepository merchantRepository)
+    public MerchantsController(
+        IMediator mediator,
+        IMerchantRepository merchantRepository)
     {
+        _mediator = mediator;
         _merchantRepository = merchantRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var merchants = await _merchantRepository.GetAllAsync();
+        var result = await _mediator.Send(new GetAllMerchantsQuery());
 
-        return Ok(merchants.Select(x => x.ToDto()));
+        return Ok(result);
     }
-
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var merchant = await _merchantRepository.GetByIdAsync(id);
+        var result = await _mediator.Send(new GetMerchantByIdQuery(id));
 
-        if (merchant == null)
+        if (result == null)
             return NotFound();
 
-        return Ok(merchant.ToDto());
+        return Ok(result);
     }
-
     [HttpPost]
-    public async Task<IActionResult> Create(CreateMerchantRequest request)
+    public async Task<IActionResult> Create(CreateMerchantCommand command)
     {
-        var merchant = request.ToEntity();
+        var result = await _mediator.Send(command);
 
-        await _merchantRepository.AddAsync(merchant);
-
-        return Ok(merchant.ToDto());
+        return Ok(result);
     }
 
     [HttpPut("{id}")]
