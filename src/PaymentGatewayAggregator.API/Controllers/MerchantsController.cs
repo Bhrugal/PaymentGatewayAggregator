@@ -137,31 +137,25 @@ public class MerchantsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, UpdateMerchantRequest request)
+    public async Task<IActionResult> Update(Guid id, UpdateMerchantCommand command)
     {
-        var merchant = await _merchantRepository.GetByIdAsync(id);
+        command.Id = id;
 
-        if (merchant == null)
+        var result = await _mediator.Send(command);
+
+        if (result == null)
             return NotFound();
 
-        merchant.Name = request.Name;
-        merchant.Email = request.Email;
-        merchant.GatewayType = request.GatewayType;
-
-        await _merchantRepository.UpdateAsync(merchant);
-
-        return Ok(merchant.ToDto());
+        return Ok(result);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var merchant = await _merchantRepository.GetByIdAsync(id);
+        var result = await _mediator.Send(new DeleteMerchantCommand(id));
 
-        if (merchant == null)
+        if (!result)
             return NotFound();
-
-        await _merchantRepository.DeleteAsync(merchant);
 
         return Ok("Merchant deleted successfully");
     }

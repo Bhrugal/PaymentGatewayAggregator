@@ -23,17 +23,18 @@ public class ValidationBehavior<TRequest, TResponse>
         {
             var context = new ValidationContext<TRequest>(request);
 
-            var validationResults = await Task.WhenAll(
-                _validators.Select(v =>
-                    v.ValidateAsync(context, cancellationToken)));
+            var results = await Task.WhenAll(
+                _validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
-            var failures = validationResults
+            var failures = results
                 .SelectMany(r => r.Errors)
                 .Where(f => f != null)
                 .ToList();
 
-            if (failures.Count != 0)
-                throw new ValidationException(failures);
+            if (failures.Any())
+            {
+                throw new FluentValidation.ValidationException(failures);
+            }
         }
 
         return await next();

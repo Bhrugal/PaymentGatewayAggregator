@@ -14,10 +14,10 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IMerchantRepository, MerchantRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();   // ? ADD THIS
 
         return services;
     }

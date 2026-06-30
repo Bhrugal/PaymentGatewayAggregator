@@ -1,6 +1,9 @@
+using MediatR;
+using PaymentGatewayAggregator.Application.Features.Merchants.DTOs;
+
 namespace PaymentGatewayAggregator.Application.Features.Merchants.Commands;
 
-public class UpdateMerchantCommand
+public class UpdateMerchantCommand : IRequest<MerchantDto?>
 {
     public Guid Id { get; set; }
 
